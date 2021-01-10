@@ -1,0 +1,659 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+    <title>move</title>
+<style>
+html { 
+  background: url(bg1.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+div.a {
+
+
+position:fixed;
+}
+
+
+#circle {
+position:fixed;
+}
+#gems1{
+    position: absolute;
+    left: 80%;
+    top: 70%;
+	height:30 px;
+	width:30px;
+}
+#gems2{
+    position: absolute;
+    left: 65%;
+    top: 50%;
+	height:40 px;
+	width:40px;
+}
+#gems3{
+    position: absolute;
+    left: 40%;
+    top: 50%;
+	height:40 px;
+	width:40px;
+}
+#gems4{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+	height:50 px;
+	width:50px;
+}
+
+#gems5{
+    position: absolute;
+    left: 20%;
+    top: 77%;
+	height:30 px;
+	width:30px;
+}
+#gems6{
+    position: absolute;
+    left: 39%;
+    top: 75%;
+	height:50 px;
+	width:50px;
+}
+#gems7{
+    position: absolute;
+    left: 56%;
+    top: 90%;
+	height:40 px;
+	width:40px;
+}
+#gems8{
+    position: absolute;
+    left: 90%;
+    top: 10%;
+	height:50 px;
+	width:50px;
+}
+
+
+
+</style>  
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script> 
+
+  </head>
+
+  <body>
+  
+        <div id="circle" border='0'><img src='fire2.png' class='life' id='life' /></div>
+   
+<div class='a' style="color:#0000FF" id = "el1"><img src='bat1.gif' class='life' id='life' /></div>
+<div class='a' id = "el2"><img src='bat1.gif' class='life' id='life' /></div>
+<div class='a' id = "el3"><img src='bat1.gif' class='life' id='life' /></div>
+<div class='a' id = "el4"><img src='bat1.gif' class='life' id='life' /></div>
+
+<div class='gem' id = "gem"><img src='ge1.png' id='gems1' /></div>
+<div class='gem' id = "gem"><img src='ge2.png'  id='gems2' /></div>
+<div class='gem' id = "gem"><img src='ge1.png'  id='gems3' /></div>
+<div class='gem' id = "gem"><img src='ge2.png'  id='gems4' /></div>
+<div class='gem' id = "gem"><img src='ge1.png' id='gems5' /></div>
+<div class='gem' id = "gem"><img src='ge2.png'  id='gems6' /></div>
+<div class='gem' id = "gem"><img src='ge1.png'  id='gems7' /></div>
+<div class='gem' id = "gem"><img src='ge2.png'  id='gems8' /></div>
+ <div id = "displayLife"></div>
+  </body>
+     <script type="text/javascript">
+var obj = document.createElement("audio");
+        obj.src="scream";
+        obj.volume=0.70;
+        obj.autoPlay=false;
+        obj.preLoad=true;
+		
+		
+		var obj1 = document.createElement("audio");
+        obj1.src="vanish";
+        obj1.volume=0.70;
+        obj1.autoPlay=false;
+        obj1.preLoad=true;
+		
+		var obj2 = document.createElement("audio");
+        obj2.src="vanish";
+        obj2.volume=0.70;
+        obj2.autoPlay=false;
+        obj2.preLoad=true;
+		
+		
+		var count="";
+        var audioElement = document.createElement('audio');
+        audioElement.setAttribute('src', 'aud1');
+        audioElement.setAttribute('autoplay', 'autoplay');		
+      
+
+		
+		
+		
+		audioElement.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+}, false);
+
+	 audioElement.play();
+	 
+	 var winCount=0;
+var count=5;
+	 var lifeLoop='';
+for(i=1;i<=5;i++){
+    lifeLoop +="<img src='fire2.png' class='life' id='life' />"     
+}
+$("#displayLife").html(lifeLoop);
+  $('.a').each(animateDiv);
+
+
+
+function makeNewPosition(){
+    
+    // Get viewport dimensions (remove the dimension of the div)
+    var h = $(window).height() - 50;
+    var w = $(window).width() - 50;
+    
+    var nh = Math.floor(Math.random() * h);
+    var nw = Math.floor(Math.random() * w);
+    
+    return [nh,nw];    
+    
+}
+
+function animateDiv(){
+  var el = $(this);
+    var newq = makeNewPosition();
+    var oldq = $(el).offset();
+    var speed = calcSpeed([oldq.top, oldq.left], newq);
+    
+    $(el).animate({ top: newq[0], left: newq[1] }, speed, function(){
+      animateDiv.apply(this);        
+    });
+    
+};
+
+
+function calcSpeed(prev, next) {
+    
+    var x = Math.abs(prev[1] - next[1]);
+    var y = Math.abs(prev[0] - next[0]);
+    
+    var greatest = x > y ? x : y;
+    
+    var speedModifier = .5;
+
+    var speed = Math.ceil(greatest/speedModifier);
+
+    return speed;
+
+}
+
+var square1 = $('#el1');
+var square2 = $('#el2');
+var square3 = $('#el3');
+var square4 = $('#el4');
+
+
+var gem1 = $('#gems1');
+var gem2 = $('#gems2');
+var gem3 = $('#gems3');
+var gem4 = $('#gems4');
+var gem5 = $('#gems5');
+var gem6 = $('#gems6');
+var gem7 = $('#gems7');
+var gem8 = $('#gems8');
+
+
+
+var $div = $('#circle');
+$(document).keydown(function(e) {
+if(e.which==37){
+  if(collision($div, gem1)){
+  
+  gem1.hide();
+   
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+  else if(collision($div, gem2)){
+  
+  gem2.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+    else if(collision($div, gem3)){
+  
+  gem3.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+    else if(collision($div, gem4)){
+  
+  gem4.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem5)){
+  
+  gem5.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem6)){
+  
+  gem6.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem7)){
+  
+  gem7.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem8)){
+  
+  gem8.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+          if(collisionBat($div, square1) || collisionBat($div, square2) || collisionBat($div, square3) || collisionBat($div, square4) ){
+		
+		lifeLoop="";
+	   count--;
+	   if(count==0){
+	 
+	   window.location.href = 'gameOver.html';
+	   
+	   }else{
+	   obj.play();
+	    alert("You Lost One Life. You are left with "+count+ " more lives");
+		  audioElement.addEventListener("load", function() {
+            
+			
+			audioElement.play();
+        }, true);
+for(i=1;i<=count;i++){
+    lifeLoop +="<img src='fire2.png' class='life' id='life' />"     
+}
+$("#displayLife").html(lifeLoop);
+
+	  }
+	  
+	  }
+	  else{
+	  
+	 
+		 
+           $("#circle").css("left", ( $("#circle").position().left - 20) + "px"); 
+		   }
+}
+
+      
+ else if(e.which==38){
+ 	 if(collision($div, gem1)){
+  
+  gem1.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+  else if(collision($div, gem2)){
+  
+  gem2.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+    else if(collision($div, gem3)){
+  
+  gem3.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+    else if(collision($div, gem4)){
+  
+  gem4.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem5)){
+  
+  gem5.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem6)){
+  
+  gem6.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem7)){
+  
+  gem7.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem8)){
+  
+  gem8.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+     if(collisionBat($div, square1) || collisionBat($div, square2) || collisionBat($div, square3) || collisionBat($div, square4) ){
+	lifeLoop="";
+	   count--;
+	   if(count==0){
+	 
+	    window.location.href = 'gameOver.html';
+	  
+	   }else{
+	   obj.play();
+	    alert("You Lost One Life. You are left with "+count+ " more lives");
+		  audioElement.addEventListener("load", function() {
+            
+			
+			audioElement.play();
+        }, true);
+for(i=1;i<=count;i++){
+    lifeLoop +="<img src='fire2.png' class='life' id='life' />"     
+}
+$("#displayLife").html(lifeLoop);
+	  }
+	  
+	  }
+	
+	  else{
+     $("#circle").css("top", ( $("#circle").position().top - 20) + "px"); 
+}
+     }  
+    else if(e.which==39){
+	 if(collision($div, gem1)){
+  
+  gem1.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+  else if(collision($div, gem2)){
+  
+  gem2.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+    else if(collision($div, gem3)){
+  
+  gem3.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+    else if(collision($div, gem4)){
+  
+  gem4.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem5)){
+  
+  gem5.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem6)){
+  
+  gem6.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem7)){
+  
+  gem7.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem8)){
+  
+  gem8.hide();
+  winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  
+  }
+         if(collisionBat($div, square1) || collisionBat($div, square2) || collisionBat($div, square3) || collisionBat($div, square4) ){
+lifeLoop="";
+	   count--;
+	   if(count==0){
+	  
+	    window.location.href = 'gameOver.html';}else{
+		obj.play();
+	    alert("You Lost One Life. You are left with "+count+ " more lives");
+		  audioElement.addEventListener("load", function() {
+            
+			
+			audioElement.play();
+        }, true);
+for(i=1;i<=count;i++){
+    lifeLoop +="<img src='fire2.png' class='life' id='life' />"     
+}
+$("#displayLife").html(lifeLoop);
+	  }
+	  
+	  }
+	   else{
+     $("#circle").css("left", ( $("#circle").position().left + 20) + "px"); 
+}
+	  }
+	else if(e.which==40){
+	    if(collision($div, gem1)){
+  
+  gem1.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+  else if(collision($div, gem2)){
+  
+  gem2.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  } 
+    else if(collision($div, gem3)){
+  
+  gem3.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+    else if(collision($div, gem4)){
+  
+  gem4.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem5)){
+  
+  gem5.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem6)){
+  
+  gem6.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem7)){
+  
+  gem7.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+   else if(collision($div, gem8)){
+  
+  gem8.hide();
+   obj1.play();
+   winCount++;
+   if(winCount==8){
+   window.location.href = 'win.html';
+   }
+  }
+         if(collisionBat($div, square1) || collisionBat($div, square2) || collisionBat($div, square3) || collisionBat($div, square4) ){
+lifeLoop="";
+	   count--;
+	   if(count==0){
+	   
+	    window.location.href = 'gameOver.html';}else{
+		obj.play();
+	    alert("You Lost One Life. You are left with "+count+ " more lives");
+		  audioElement.addEventListener("load", function() {
+            
+			
+			audioElement.play();
+        }, true);
+for(i=1;i<=count;i++){
+    lifeLoop +="<img src='fire2.png' class='life' id='life' />"     
+}
+$("#displayLife").html(lifeLoop);
+	  }
+	  }
+	  else{
+         $("#circle").css("top", ( $("#circle").position().top + 20) + "px"); 
+      }
+}
+});
+
+  function collision($div1, $div2) {
+  var result=true;
+      var x1 = $div1.offset().left;
+      var y1 = $div1.offset().top;
+      var h1 = $div1.outerHeight(true);
+      var w1 = $div1.outerWidth(true);
+      var b1 = y1 + h1;
+      var r1 = x1 + w1;
+      var x2 = $div2.offset().left;
+      var y2 = $div2.offset().top;
+      var h2 = $div2.outerHeight(true);
+      var w2 = $div2.outerWidth(true);
+      var b2 = y2 + h2;
+      var r2 = x2 + w2;
+        
+      if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2){ result= false};
+     return result;
+    }
+	function collisionBat($div1, $div2) {
+  var result=true;
+      var x1 = $div1.offset().left;
+      var y1 = $div1.offset().top;
+      var h1 = $div1.outerHeight(true);
+      var w1 = $div1.outerWidth(true);
+      var b1 = y1 + h1;
+      var r1 = x1 + w1;
+      var x2 = $div2.offset().left;
+      var y2 = $div2.offset().top;
+      var h2 = $div2.outerHeight(true);
+      var w2 = $div2.outerWidth(true);
+      var b2 = y2 + h2;
+      var r2 = x2 + w2;
+        
+      if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2){ result= false};
+     return result;
+    }
+
+    
+
+
+  </script>
+</html>

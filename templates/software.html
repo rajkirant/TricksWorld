@@ -1,0 +1,5 @@
+{% load static %}software<h1>Windows Software</h1>
+<br/><br/><br/><br/>
+{% for soft in softs %}
+<a href="{{soft.link}}" style="color:yellow">{{soft.name}}</a><br/><br/>
+{% endfor %}
